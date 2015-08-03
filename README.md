@@ -2,7 +2,8 @@
 
 go-paypal-classic is library for [PayPal Classic API](https://developer.paypal.com/docs/classic/api/)
 
-## Current Supported API list
+## Current 
+Supported API list
 
 - Express Checkout
     - [CreateRecurringPaymentsProfile](https://developer.paypal.com/docs/classic/api/merchant/CreateRecurringPaymentsProfile_API_Operation_NVP/)
