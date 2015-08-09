@@ -75,9 +75,23 @@ type GetRecurringPaymentsProfileDetailsResponse struct {
 	ShipAddressStatus string `url:"SHIPADDRESSSTATUS"`
 }
 
+func (r *GetRecurringPaymentsProfileDetailsResponse) IsActive() bool {
+	return r.Status == statusActive
+}
+
 // IsSuccess checks the request is success or not
 func (r *GetRecurringPaymentsProfileDetailsResponse) IsSuccess() bool {
+	return r.IsRequestSuccess() && r.IsOperationSuccess()
+}
+
+// IsRequestSuccess checks the request is success or not
+func (r *GetRecurringPaymentsProfileDetailsResponse) IsRequestSuccess() bool {
 	return r.ACK == ackSuccess
+}
+
+// IsOperationSuccess checks the request is success or not
+func (r *GetRecurringPaymentsProfileDetailsResponse) IsOperationSuccess() bool {
+	return r.IsActive()
 }
 
 // Error returns error text

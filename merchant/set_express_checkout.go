@@ -86,7 +86,17 @@ func (r *SetExpressCheckoutResponse) RedirectURL() string {
 
 // IsSuccess checks the request is success or not
 func (r *SetExpressCheckoutResponse) IsSuccess() bool {
+	return r.IsRequestSuccess()
+}
+
+// IsRequestSuccess checks the request is success or not
+func (r *SetExpressCheckoutResponse) IsRequestSuccess() bool {
 	return r.ACK == ackSuccess
+}
+
+// IsOperationSuccess checks the request is success or not
+func (r *SetExpressCheckoutResponse) IsOperationSuccess() bool {
+	return r.IsRequestSuccess()
 }
 
 // Error returns error text

@@ -57,14 +57,24 @@ type GetExpressCheckoutDetailsResponse struct {
 	PaymentSeverityCode string `url:"PAYMENTREQUESTINFO_0_SEVERITYCODE"`
 }
 
-// IsSuccess checks the request is success or not
-func (r *GetExpressCheckoutDetailsResponse) IsSuccess() bool {
-	return r.ACK == ackSuccess
-}
-
 // IsPayerVerified checks the payer status is verified or not
 func (r *GetExpressCheckoutDetailsResponse) IsPayerVerified() bool {
 	return r.PayerStatus == payerStatusVerified
+}
+
+// IsSuccess checks the request is success or not
+func (r *GetExpressCheckoutDetailsResponse) IsSuccess() bool {
+	return r.IsRequestSuccess() && r.IsOperationSuccess()
+}
+
+// IsRequestSuccess checks the request is success or not
+func (r *GetExpressCheckoutDetailsResponse) IsRequestSuccess() bool {
+	return r.ACK == ackSuccess
+}
+
+// IsOperationSuccess checks the request is success or not
+func (r *GetExpressCheckoutDetailsResponse) IsOperationSuccess() bool {
+	return r.IsPayerVerified()
 }
 
 // Error returns error text

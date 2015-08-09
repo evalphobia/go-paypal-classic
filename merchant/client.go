@@ -21,8 +21,10 @@ const (
 	itemCategoryDigital  = "Digital"
 	billingTypeRecurring = "RecurringPayments"
 
-	ackSuccess = "Success"
-	ackFailure = "Failure"
+	ackSuccess    = "Success"
+	ackFailure    = "Failure"
+	statusActive  = "Active"
+	profileActive = "ActiveProfile"
 )
 
 // Merchant is base struct for PayPal Classic API
@@ -113,4 +115,12 @@ func (r BaseResponse) Errors(s []string) string {
 
 func parseErrors(errs []string) string {
 	return strings.Join(errs, ",")
+}
+
+// MerchantResponse is interface of response from each API
+type MerchantResponse interface {
+	IsSuccess() bool
+	IsRequestSuccess() bool
+	IsOperationSuccess() bool
+	Error() string
 }

@@ -72,11 +72,16 @@ type DoExpressCheckoutPaymentResponse struct {
 
 // IsSuccess checks the request is success or not
 func (r *DoExpressCheckoutPaymentResponse) IsSuccess() bool {
+	return r.IsRequestSuccess() && r.IsOperationSuccess()
+}
+
+// IsRequestSuccess checks the request is success or not
+func (r *DoExpressCheckoutPaymentResponse) IsRequestSuccess() bool {
 	return r.ACK == ackSuccess
 }
 
-// IsPaymentSuccess checks the payment operation is success or not
-func (r *DoExpressCheckoutPaymentResponse) IsPaymentSuccess() bool {
+// IsOperationSuccess checks the request is success or not
+func (r *DoExpressCheckoutPaymentResponse) IsOperationSuccess() bool {
 	return r.PaymentACK == ackSuccess
 }
 

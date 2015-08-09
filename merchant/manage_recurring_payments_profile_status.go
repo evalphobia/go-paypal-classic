@@ -57,7 +57,17 @@ type ManageRecurringPaymentsProfileStatusResponse struct {
 
 // IsSuccess checks the request is success or not
 func (r *ManageRecurringPaymentsProfileStatusResponse) IsSuccess() bool {
+	return r.IsRequestSuccess()
+}
+
+// IsRequestSuccess checks the request is success or not
+func (r *ManageRecurringPaymentsProfileStatusResponse) IsRequestSuccess() bool {
 	return r.ACK == ackSuccess
+}
+
+// IsOperationSuccess checks the request is success or not
+func (r *ManageRecurringPaymentsProfileStatusResponse) IsOperationSuccess() bool {
+	return r.IsRequestSuccess()
 }
 
 // Error returns error text

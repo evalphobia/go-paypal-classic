@@ -91,7 +91,17 @@ type CreateRecurringPaymentsProfileResponse struct {
 
 // IsSuccess checks the request is success or not
 func (r *CreateRecurringPaymentsProfileResponse) IsSuccess() bool {
+	return r.IsRequestSuccess() && r.IsOperationSuccess()
+}
+
+// IsRequestSuccess checks the request is success or not
+func (r *CreateRecurringPaymentsProfileResponse) IsRequestSuccess() bool {
 	return r.ACK == ackSuccess
+}
+
+// IsOperationSuccess checks the request is success or not
+func (r *CreateRecurringPaymentsProfileResponse) IsOperationSuccess() bool {
+	return r.ProfileStatus == profileActive
 }
 
 // Error returns error text
