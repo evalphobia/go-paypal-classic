@@ -18,10 +18,11 @@ func CallGET(url string, params interface{}, result interface{}) error {
 
 // call sends http request to `url` with `params` and set reqponse to `result`
 func call(method, url string, params interface{}, result interface{}) error {
-	b, err := request.DSN{
+	dsn := request.DSN{
 		Method: method,
 		Uri:    url,
-	}.Param(params).Call()
+	}
+	b, err := dsn.Param(params).Call()
 	if err != nil {
 		return err
 	}
