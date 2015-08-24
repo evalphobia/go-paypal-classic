@@ -23,7 +23,7 @@ func (svc *ManageRecurringPaymentsProfileStatus) SetAsCancel(desc string) *Manag
 	return svc
 }
 
-// SetAsSuspend		 sets action as `Suspend`
+// SetAsSuspend sets action as `Suspend`
 func (svc *ManageRecurringPaymentsProfileStatus) SetAsSuspend(desc string) *ManageRecurringPaymentsProfileStatus {
 	svc.Action = "Suspend"
 	svc.Note = desc

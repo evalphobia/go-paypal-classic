@@ -64,17 +64,10 @@ type GetRecurringPaymentsProfileDetailsResponse struct {
 	RegularShippingAmount   string `url:"REGULARSHIPPINGAMT"`
 	RegularTaxAmount        string `url:"REGULARTAXAMT"`
 
-	ShipToStreet      string `url:"SHIPTOSTREET"`
-	ShipToCity        string `url:"SHIPTOCITY"`
-	ShipToState       string `url:"SHIPTOSTATE"`
-	ShipToZip         string `url:"SHIPTOZIP"`
-	ShipToCountryCode string `url:"SHIPTOCOUNTRYCODE"`
-	ShipToCountry     string `url:"SHIPTOCOUNTRY"`
-	ShipToCountryName string `url:"SHIPTOCOUNTRYNAME"`
-	ShipAddressOwner  string `url:"SHIPADDRESSOWNER"`
-	ShipAddressStatus string `url:"SHIPADDRESSSTATUS"`
+	ShippingResponse `url:",squash"`
 }
 
+// IsActive checks the recurring payment is still active
 func (r *GetRecurringPaymentsProfileDetailsResponse) IsActive() bool {
 	return r.Status == statusActive
 }
