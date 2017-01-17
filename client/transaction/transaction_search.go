@@ -3,6 +3,7 @@ package transaction
 import (
 	"errors"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/evalphobia/go-paypal-classic/client"
@@ -90,6 +91,37 @@ func (r *TransactionSearchResponse) Unmarshal(mapData map[string]interface{}) er
 	return nil
 }
 
+// Transactions returns list of transactions.
+func (r *TransactionSearchResponse) Transactions() (list []TransactionSearchItem) {
+	for _, item := range r.Items {
+		if item.IsTransaction() {
+			list = append(list, item)
+		}
+	}
+	return
+}
+
+// TransactionIDList returns list of transaction id for payment.
+func (r *TransactionSearchResponse) TransactionIDList() (list []string) {
+	for _, item := range r.Items {
+		if item.IsTransaction() {
+			list = append(list, item.TransactionID)
+		}
+	}
+	return
+}
+
+// GetCancelDate returns time of canceled.
+func (r *TransactionSearchResponse) GetCancelDate() (time.Time, bool) {
+	for i := len(r.Items) - 1; i >= 0; i-- {
+		item := r.Items[i]
+		if item.IsProfile() && item.IsCanceled() {
+			return item.Timestamp, true
+		}
+	}
+	return time.Time{}, false
+}
+
 // TransactionSearchItem is single transaction.
 type TransactionSearchItem struct {
 	Timestamp     time.Time
@@ -143,4 +175,39 @@ func createTransactionSearchItem(mapData map[string]interface{}, i int) Transact
 		result.NetAmount = v
 	}
 	return result
+}
+
+// IsProfile checks the TransactionID is Profile or not.
+func (item TransactionSearchItem) IsProfile() bool {
+	return strings.HasPrefix(item.TransactionID, "I-")
+}
+
+// IsTransaction checks the TransactionID is Transaction or not.
+func (item TransactionSearchItem) IsTransaction() bool {
+	return !item.IsProfile()
+}
+
+// IsRecurringPayment checks the transaction is Recurring Payment or not.
+func (item TransactionSearchItem) IsRecurringPayment() bool {
+	return item.Type == "Recurring Payment"
+}
+
+// IsPayment checks the transaction is Payment or not.
+func (item TransactionSearchItem) IsPayment() bool {
+	return item.Type == "Payment"
+}
+
+// IsCreated checks the transaction is created or not.
+func (item TransactionSearchItem) IsCreated() bool {
+	return item.Status == "Created"
+}
+
+// IsCanceled checks the transaction is canceled or not.
+func (item TransactionSearchItem) IsCanceled() bool {
+	return item.Status == "Canceled"
+}
+
+// IsCompleted checks the transaction is completed or not.
+func (item TransactionSearchItem) IsCompleted() bool {
+	return item.Status == "Completed"
 }
