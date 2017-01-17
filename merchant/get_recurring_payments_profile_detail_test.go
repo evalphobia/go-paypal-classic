@@ -19,6 +19,6 @@ func TestGetRecurringPaymentsProfileDetails(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)
 	assert.Equal("124", v.Version)
-	assert.Equal("000000", v.Build)
-	assert.Equal("10001", v.ErrorCode)
+	assert.NotEmpty(v.Build)
+	assert.Equal("11552", v.ErrorCode)
 }
