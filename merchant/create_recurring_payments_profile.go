@@ -14,10 +14,11 @@ type CreateRecurringPaymentsProfile struct {
 	BillingFrequency int    `url:"BILLINGFREQUENCY"`
 	BillingStartDate string `url:"PROFILESTARTDATE"`
 
-	SubscriberName string  `url:"SUBSCRIBERNAME"`
-	Description    string  `url:"DESC"`
-	Amount         float64 `url:"AMT"`
-	Currency       string  `url:"CURRENCYCODE"`
+	SubscriberName    string  `url:"SUBSCRIBERNAME"`
+	Description       string  `url:"DESC"`
+	Amount            float64 `url:"AMT"`
+	Currency          string  `url:"CURRENCYCODE"`
+	MaxFailedPayments int     `url:"MAXFAILEDPAYMENTS,omitempty"`
 
 	Token   string `url:"TOKEN"`
 	PayerID string `url:"PAYERID"`

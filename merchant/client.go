@@ -52,9 +52,9 @@ type MerchantRequest interface {
 func (m Merchant) call(svc MerchantRequest, result interface{}) error {
 	svc.SetMerchant(m)
 	if m.Config.IsProduction() {
-		return request.CallGET(endpointProduction, svc, result)
+		return request.CallPOST(endpointProduction, svc, result)
 	}
-	return request.CallGET(endpointSandbox, svc, result)
+	return request.CallPOST(endpointSandbox, svc, result)
 }
 
 // redirectBase returns base url of PayPal ExpressCheckout
