@@ -10,13 +10,13 @@ func TestSetExpressCheckout(t *testing.T) {
 	assert := assert.New(t)
 	redirectSuccess := "https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=EC-"
 
-	m := NewDefault()
+	cli := testNewDefault()
 
 	// error
 	svc := &SetExpressCheckout{
 		TotalAmount: 100.00,
 	}
-	v, err := svc.Do(m)
+	v, err := svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)
 	assert.Equal("124", v.Version)
@@ -33,7 +33,7 @@ func TestSetExpressCheckout(t *testing.T) {
 		ReturnURL:   "http://localhost/",
 		CancelURL:   "http://localhost/",
 	}
-	v, err = svc.Do(m)
+	v, err = svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Success", v.ACK)
 	assert.Equal("124", v.Version)
@@ -52,14 +52,14 @@ func TestSetExpressCheckoutDigital(t *testing.T) {
 	assert := assert.New(t)
 	redirectSuccess := "https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=EC-"
 
-	m := NewDefault()
+	cli := testNewDefault()
 
 	// error
 	svc := &SetExpressCheckout{
 		TotalAmount: 100.00,
 	}
 	svc.SetAsDigitalCategory()
-	v, err := svc.Do(m)
+	v, err := svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)
 	assert.Equal("124", v.Version)
@@ -79,7 +79,7 @@ func TestSetExpressCheckoutDigital(t *testing.T) {
 		Currency:   CurrencyTWD,
 	}
 	svc.SetAsDigitalCategory()
-	v, err = svc.Do(m)
+	v, err = svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Success", v.ACK)
 	assert.Equal("124", v.Version)
@@ -98,14 +98,14 @@ func TestSetExpressCheckoutRecurring(t *testing.T) {
 	assert := assert.New(t)
 	redirectSuccess := "https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=EC-"
 
-	m := NewDefault()
+	cli := testNewDefault()
 
 	// error
 	svc := &SetExpressCheckout{
 		TotalAmount: 100.00,
 	}
 	svc.SetAsRecurringPayment("this is recurring")
-	v, err := svc.Do(m)
+	v, err := svc.Do(cli)
 
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)
@@ -126,7 +126,7 @@ func TestSetExpressCheckoutRecurring(t *testing.T) {
 		Currency:   CurrencyTWD,
 	}
 	svc.SetAsRecurringPayment("this is recurring")
-	v, err = svc.Do(m)
+	v, err = svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Success", v.ACK)
 	assert.Equal("124", v.Version)

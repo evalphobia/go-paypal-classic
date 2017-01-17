@@ -1,10 +1,11 @@
 package merchant
 
+import "github.com/evalphobia/go-paypal-classic/client"
+
 // SetExpressCheckout is struct for SetExpressCheckout API
 // see: https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
 type SetExpressCheckout struct {
-	Merchant    `url:",squash"`
-	BaseRequest `url:",squash"`
+	client.BaseRequest `url:",squash"`
 
 	Action string `url:"PAYMENTREQUEST_0_PAYMENTACTION"`
 
@@ -27,11 +28,6 @@ type SetExpressCheckout struct {
 	Locale string `url:"LOCALECODE"`
 }
 
-// SetMerchant sets Merchant
-func (svc *SetExpressCheckout) SetMerchant(m Merchant) {
-	svc.Merchant = m
-}
-
 // SetAsRecurringPayment sets billing type as recurring payment
 func (svc *SetExpressCheckout) SetAsRecurringPayment(desc string) *SetExpressCheckout {
 	svc.BillingType = billingTypeRecurring
@@ -51,7 +47,7 @@ func (svc *SetExpressCheckout) SetAsDigitalCategory() *SetExpressCheckout {
 }
 
 // Do executes SetExpressCheckout operation
-func (svc *SetExpressCheckout) Do(m Merchant) (*SetExpressCheckoutResponse, error) {
+func (svc *SetExpressCheckout) Do(cli client.Client) (*SetExpressCheckoutResponse, error) {
 	const method = "SetExpressCheckout"
 	svc.BaseRequest.Method = method
 	svc.BaseRequest.Action = paymentActionSale
@@ -61,16 +57,16 @@ func (svc *SetExpressCheckout) Do(m Merchant) (*SetExpressCheckoutResponse, erro
 	}
 
 	result := &SetExpressCheckoutResponse{
-		redirectURL: m.redirectBase(),
+		redirectURL: cli.RedirectBase(),
 	}
-	err := m.call(svc, result)
+	err := cli.Call(svc, result)
 	return result, err
 }
 
 // SetExpressCheckoutResponse is struct for response of SetExpressCheckout API
 type SetExpressCheckoutResponse struct {
-	BaseResponse `url:",squash"`
-	redirectURL  string `url:"-"`
+	client.BaseResponse `url:",squash"`
+	redirectURL         string `url:"-"`
 
 	// success
 	Token string `url:"TOKEN"`
@@ -87,11 +83,6 @@ func (r *SetExpressCheckoutResponse) RedirectURL() string {
 // IsSuccess checks the request is success or not
 func (r *SetExpressCheckoutResponse) IsSuccess() bool {
 	return r.IsRequestSuccess()
-}
-
-// IsRequestSuccess checks the request is success or not
-func (r *SetExpressCheckoutResponse) IsRequestSuccess() bool {
-	return r.ACK == ackSuccess
 }
 
 // IsOperationSuccess checks the request is success or not

@@ -1,5 +1,20 @@
 package merchant
 
+import "github.com/evalphobia/go-paypal-classic/client"
+
+const (
+	paymentActionSale    = "sale"
+	payerStatusVerified  = "verified"
+	itemCategoryDigital  = "Digital"
+	billingTypeRecurring = "RecurringPayments"
+
+	statusActive          = "Active"
+	profileActive         = "ActiveProfile"
+	paymentStatusComleted = "Completed"
+
+	ackSuccess = client.ACKSuccess
+)
+
 // PayPal supported currencies
 const (
 	CurrencyAUD = "AUD"

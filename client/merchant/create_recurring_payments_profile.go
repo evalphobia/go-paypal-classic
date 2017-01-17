@@ -2,13 +2,14 @@ package merchant
 
 import (
 	"time"
+
+	"github.com/evalphobia/go-paypal-classic/client"
 )
 
 // CreateRecurringPaymentsProfile is struct for CreateRecurringPaymentsProfile API
 // see: https://developer.paypal.com/docs/classic/api/merchant/CreateRecurringPaymentsProfile_API_Operation_NVP/
 type CreateRecurringPaymentsProfile struct {
-	Merchant    `url:",squash"`
-	BaseRequest `url:",squash"`
+	client.BaseRequest `url:",squash"`
 
 	BillingPeriod    string `url:"BILLINGPERIOD"`
 	BillingFrequency int    `url:"BILLINGFREQUENCY"`
@@ -64,25 +65,20 @@ func (svc *CreateRecurringPaymentsProfile) SetBillingStartDateFromNow() {
 	}
 }
 
-// SetMerchant sets Merchant
-func (svc *CreateRecurringPaymentsProfile) SetMerchant(m Merchant) {
-	svc.Merchant = m
-}
-
 // Do executes CreateRecurringPaymentsProfile operation
-func (svc *CreateRecurringPaymentsProfile) Do(m Merchant) (*CreateRecurringPaymentsProfileResponse, error) {
+func (svc *CreateRecurringPaymentsProfile) Do(cli client.Client) (*CreateRecurringPaymentsProfileResponse, error) {
 	const method = "CreateRecurringPaymentsProfile"
 	svc.BaseRequest.Method = method
 	svc.BaseRequest.Action = paymentActionSale
 
 	result := &CreateRecurringPaymentsProfileResponse{}
-	err := m.call(svc, result)
+	err := cli.Call(svc, result)
 	return result, err
 }
 
 // CreateRecurringPaymentsProfileResponse is struct for response of CreateRecurringPaymentsProfile API
 type CreateRecurringPaymentsProfileResponse struct {
-	BaseResponse `url:",squash"`
+	client.BaseResponse `url:",squash"`
 
 	// success
 	Token         string `url:"TOKEN"`
@@ -93,11 +89,6 @@ type CreateRecurringPaymentsProfileResponse struct {
 // IsSuccess checks the request is success or not
 func (r *CreateRecurringPaymentsProfileResponse) IsSuccess() bool {
 	return r.IsRequestSuccess() && r.IsOperationSuccess()
-}
-
-// IsRequestSuccess checks the request is success or not
-func (r *CreateRecurringPaymentsProfileResponse) IsRequestSuccess() bool {
-	return r.ACK == ackSuccess
 }
 
 // IsOperationSuccess checks the request is success or not

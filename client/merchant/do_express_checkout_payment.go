@@ -1,10 +1,11 @@
 package merchant
 
+import "github.com/evalphobia/go-paypal-classic/client"
+
 // DoExpressCheckoutPayment is struct for DoExpressCheckoutPayment API
 // see: https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/
 type DoExpressCheckoutPayment struct {
-	Merchant    `url:",squash"`
-	BaseRequest `url:",squash"`
+	client.BaseRequest `url:",squash"`
 
 	Token   string `url:"TOKEN"`
 	PayerID string `url:"PAYERID"`
@@ -15,13 +16,8 @@ type DoExpressCheckoutPayment struct {
 	Currency    string  `url:"PAYMENTREQUEST_0_CURRENCYCODE"`
 }
 
-// SetMerchant sets Merchant
-func (svc *DoExpressCheckoutPayment) SetMerchant(m Merchant) {
-	svc.Merchant = m
-}
-
 // Do executes DoExpressCheckoutPayment operation
-func (svc *DoExpressCheckoutPayment) Do(m Merchant) (*DoExpressCheckoutPaymentResponse, error) {
+func (svc *DoExpressCheckoutPayment) Do(cli client.Client) (*DoExpressCheckoutPaymentResponse, error) {
 	const method = "DoExpressCheckoutPayment"
 	svc.BaseRequest.Method = method
 	svc.BaseRequest.Action = paymentActionSale
@@ -31,13 +27,13 @@ func (svc *DoExpressCheckoutPayment) Do(m Merchant) (*DoExpressCheckoutPaymentRe
 	}
 
 	result := &DoExpressCheckoutPaymentResponse{}
-	err := m.call(svc, result)
+	err := cli.Call(svc, result)
 	return result, err
 }
 
 // DoExpressCheckoutPaymentResponse is struct for response of DoExpressCheckoutPayment API
 type DoExpressCheckoutPaymentResponse struct {
-	BaseResponse `url:",squash"`
+	client.BaseResponse `url:",squash"`
 
 	// success
 	Token string `url:"TOKEN"`
@@ -73,11 +69,6 @@ type DoExpressCheckoutPaymentResponse struct {
 // IsSuccess checks the request is success or not
 func (r *DoExpressCheckoutPaymentResponse) IsSuccess() bool {
 	return r.IsRequestSuccess() && r.IsOperationSuccess()
-}
-
-// IsRequestSuccess checks the request is success or not
-func (r *DoExpressCheckoutPaymentResponse) IsRequestSuccess() bool {
-	return r.ACK == ackSuccess
 }
 
 // IsOperationSuccess checks the request is success or not

@@ -1,32 +1,28 @@
 package merchant
 
+import "github.com/evalphobia/go-paypal-classic/client"
+
 // GetRecurringPaymentsProfileDetails is struct for GetRecurringPaymentsProfileDetails API
 // see: https://developer.paypal.com/docs/classic/api/merchant/GetRecurringPaymentsProfileDetails_API_Operation_NVP/
 type GetRecurringPaymentsProfileDetails struct {
-	Merchant    `url:",squash"`
-	BaseRequest `url:",squash"`
+	client.BaseRequest `url:",squash"`
 
 	ProfileID string `url:"PROFILEID"`
 }
 
-// SetMerchant sets Merchant
-func (svc *GetRecurringPaymentsProfileDetails) SetMerchant(m Merchant) {
-	svc.Merchant = m
-}
-
 // Do executes GetRecurringPaymentsProfileDetails operation
-func (svc *GetRecurringPaymentsProfileDetails) Do(m Merchant) (*GetRecurringPaymentsProfileDetailsResponse, error) {
+func (svc *GetRecurringPaymentsProfileDetails) Do(cli client.Client) (*GetRecurringPaymentsProfileDetailsResponse, error) {
 	const method = "GetRecurringPaymentsProfileDetails"
 	svc.BaseRequest.Method = method
 
 	result := &GetRecurringPaymentsProfileDetailsResponse{}
-	err := m.call(svc, result)
+	err := cli.Call(svc, result)
 	return result, err
 }
 
 // GetRecurringPaymentsProfileDetailsResponse is struct for response of GetRecurringPaymentsProfileDetails API
 type GetRecurringPaymentsProfileDetailsResponse struct {
-	BaseResponse `url:",squash"`
+	client.BaseResponse `url:",squash"`
 
 	// success
 	ProfileID             string `url:"PROFILEID"`
@@ -64,7 +60,7 @@ type GetRecurringPaymentsProfileDetailsResponse struct {
 	RegularShippingAmount   string `url:"REGULARSHIPPINGAMT"`
 	RegularTaxAmount        string `url:"REGULARTAXAMT"`
 
-	ShippingResponse `url:",squash"`
+	client.ShippingResponse `url:",squash"`
 }
 
 // IsActive checks the recurring payment is still active
@@ -75,11 +71,6 @@ func (r *GetRecurringPaymentsProfileDetailsResponse) IsActive() bool {
 // IsSuccess checks the request is success or not
 func (r *GetRecurringPaymentsProfileDetailsResponse) IsSuccess() bool {
 	return r.IsRequestSuccess() && r.IsOperationSuccess()
-}
-
-// IsRequestSuccess checks the request is success or not
-func (r *GetRecurringPaymentsProfileDetailsResponse) IsRequestSuccess() bool {
-	return r.ACK == ackSuccess
 }
 
 // IsOperationSuccess checks the request is success or not

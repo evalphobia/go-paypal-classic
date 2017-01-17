@@ -9,12 +9,12 @@ import (
 func TestGetTransactionDetails(t *testing.T) {
 	assert := assert.New(t)
 
-	m := NewDefault()
+	cli := testNewDefault()
 	// error
 	svc := &GetTransactionDetails{
 		TransactionID: "XXXXXXXXXXXXX",
 	}
-	v, err := svc.Do(m)
+	v, err := svc.Do(cli)
 
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)

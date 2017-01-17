@@ -1,19 +1,15 @@
 package merchant
 
+import "github.com/evalphobia/go-paypal-classic/client"
+
 // ManageRecurringPaymentsProfileStatus is struct for ManageRecurringPaymentsProfileStatus API
 // see: https://developer.paypal.com/docs/classic/api/merchant/ManageRecurringPaymentsProfileStatus_API_Operation_NVP/
 type ManageRecurringPaymentsProfileStatus struct {
-	Merchant    `url:",squash"`
-	BaseRequest `url:",squash"`
+	client.BaseRequest `url:",squash"`
 
 	ProfileID string `url:"PROFILEID"`
 	Action    string `url:"ACTION"`
 	Note      string `url:"NOTE"`
-}
-
-// SetMerchant sets Merchant
-func (svc *ManageRecurringPaymentsProfileStatus) SetMerchant(m Merchant) {
-	svc.Merchant = m
 }
 
 // SetAsCancel sets action as `Cancel`
@@ -38,18 +34,18 @@ func (svc *ManageRecurringPaymentsProfileStatus) SetAsReactivate(desc string) *M
 }
 
 // Do executes ManageRecurringPaymentsProfileStatus operation
-func (svc *ManageRecurringPaymentsProfileStatus) Do(m Merchant) (*ManageRecurringPaymentsProfileStatusResponse, error) {
+func (svc *ManageRecurringPaymentsProfileStatus) Do(cli client.Client) (*ManageRecurringPaymentsProfileStatusResponse, error) {
 	const method = "ManageRecurringPaymentsProfileStatus"
 	svc.BaseRequest.Method = method
 
 	result := &ManageRecurringPaymentsProfileStatusResponse{}
-	err := m.call(svc, result)
+	err := cli.Call(svc, result)
 	return result, err
 }
 
 // ManageRecurringPaymentsProfileStatusResponse is struct for response of ManageRecurringPaymentsProfileStatus API
 type ManageRecurringPaymentsProfileStatusResponse struct {
-	BaseResponse `url:",squash"`
+	client.BaseResponse `url:",squash"`
 
 	// success
 	ProfileID string `url:"PROFILEID"`
@@ -58,11 +54,6 @@ type ManageRecurringPaymentsProfileStatusResponse struct {
 // IsSuccess checks the request is success or not
 func (r *ManageRecurringPaymentsProfileStatusResponse) IsSuccess() bool {
 	return r.IsRequestSuccess()
-}
-
-// IsRequestSuccess checks the request is success or not
-func (r *ManageRecurringPaymentsProfileStatusResponse) IsRequestSuccess() bool {
-	return r.ACK == ackSuccess
 }
 
 // IsOperationSuccess checks the request is success or not
