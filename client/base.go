@@ -1,7 +1,13 @@
-package merchant
+package client
 
 import (
 	"strings"
+)
+
+// ACK statuses.
+const (
+	ACKSuccess = "Success"
+	ACKFailure = "Failure"
 )
 
 // BaseRequest is base struct for api request
@@ -31,6 +37,11 @@ type BaseResponse struct {
 	SeverityCode1 string `url:"L_SEVERITYCODE1"`
 }
 
+// IsRequestSuccess checks the request is success or not.
+func (r BaseResponse) IsRequestSuccess() bool {
+	return r.ACK == ACKSuccess
+}
+
 func (r BaseResponse) baseError() []string {
 	var errs []string
 	if r.ShortMessage != "" {
@@ -58,8 +69,8 @@ func parseErrors(errs []string) string {
 	return strings.Join(errs, ",")
 }
 
-// MerchantResponse is interface of response from each API
-type MerchantResponse interface {
+// Response is interface of response from each API
+type Response interface {
 	IsSuccess() bool
 	IsRequestSuccess() bool
 	IsOperationSuccess() bool

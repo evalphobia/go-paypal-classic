@@ -9,7 +9,7 @@ import (
 func TestDoExpressCheckoutPayment(t *testing.T) {
 	assert := assert.New(t)
 
-	m := NewDefault()
+	cli := testNewDefault()
 
 	// error
 	svc := &DoExpressCheckoutPayment{
@@ -18,7 +18,7 @@ func TestDoExpressCheckoutPayment(t *testing.T) {
 		TotalAmount: 200.0,
 		Currency:    CurrencyTWD,
 	}
-	v, err := svc.Do(m)
+	v, err := svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)
 	assert.Equal("124", v.Version)

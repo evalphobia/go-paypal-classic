@@ -1,32 +1,28 @@
 package merchant
 
+import "github.com/evalphobia/go-paypal-classic/client"
+
 // GetTransactionDetails is struct for GetTransactionDetails API
 // see: https://developer.paypal.com/docs/classic/api/merchant/GetTransactionDetails_API_Operation_NVP/
 type GetTransactionDetails struct {
-	Merchant    `url:",squash"`
-	BaseRequest `url:",squash"`
+	client.BaseRequest `url:",squash"`
 
 	TransactionID string `url:"TRANSACTIONID"`
 }
 
-// SetMerchant sets Merchant
-func (svc *GetTransactionDetails) SetMerchant(m Merchant) {
-	svc.Merchant = m
-}
-
 // Do executes GetTransactionDetails operation
-func (svc *GetTransactionDetails) Do(m Merchant) (*GetTransactionDetailsResponse, error) {
+func (svc *GetTransactionDetails) Do(cli client.Client) (*GetTransactionDetailsResponse, error) {
 	const method = "GetTransactionDetails"
 	svc.BaseRequest.Method = method
 
 	result := &GetTransactionDetailsResponse{}
-	err := m.call(svc, result)
+	err := cli.Call(svc, result)
 	return result, err
 }
 
 // GetTransactionDetailsResponse is struct for response of GetTransactionDetails API
 type GetTransactionDetailsResponse struct {
-	BaseResponse `url:",squash"`
+	client.BaseResponse `url:",squash"`
 
 	// success
 	TransactionID   string `url:"TRANSACTIONID"`
@@ -62,17 +58,12 @@ type GetTransactionDetailsResponse struct {
 	ShipAmount       string `url:"SHIPAMOUNT"`
 	ShipHandleAmount string `url:"SHIPHANDLEAMOUNT"`
 
-	ShippingResponse `url:",squash"`
+	client.ShippingResponse `url:",squash"`
 }
 
 // IsSuccess checks the request is success or not
 func (r *GetTransactionDetailsResponse) IsSuccess() bool {
 	return r.IsRequestSuccess() && r.IsOperationSuccess()
-}
-
-// IsRequestSuccess checks the request is success or not
-func (r *GetTransactionDetailsResponse) IsRequestSuccess() bool {
-	return r.ACK == ackSuccess
 }
 
 // IsOperationSuccess checks the request is success or not

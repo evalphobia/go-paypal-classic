@@ -6,16 +6,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetRecurringPaymentsProfileDetails(t *testing.T) {
+func TestManageRecurringPaymentsProfileStatus(t *testing.T) {
 	assert := assert.New(t)
 
-	m := NewDefault()
+	cli := testNewDefault()
 
 	// error
-	svc := &GetRecurringPaymentsProfileDetails{
+	svc := &ManageRecurringPaymentsProfileStatus{
 		ProfileID: "I-000000000000",
 	}
-	v, err := svc.Do(m)
+	svc.SetAsSuspend("foo")
+	v, err := svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)
 	assert.Equal("124", v.Version)

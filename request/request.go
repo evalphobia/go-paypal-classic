@@ -23,6 +23,10 @@ func CallPOST(url string, params interface{}, result interface{}) (err error) {
 	mapData := parseToMap(resp.String())
 	switch v := result.(type) {
 	case unmarshaler:
+		err = assignFromMap(mapData, result)
+		if err != nil {
+			return err
+		}
 		v.Unmarshal(mapData)
 		return nil
 	default:

@@ -1,32 +1,28 @@
 package merchant
 
+import "github.com/evalphobia/go-paypal-classic/client"
+
 // GetExpressCheckoutDetails is struct for GetExpressCheckoutDetails API
 // see: https://developer.paypal.com/docs/classic/api/merchant/GetExpressCheckoutDetails_API_Operation_NVP/
 type GetExpressCheckoutDetails struct {
-	Merchant    `url:",squash"`
-	BaseRequest `url:",squash"`
+	client.BaseRequest `url:",squash"`
 
 	Token string `url:"TOKEN"`
 }
 
-// SetMerchant sets Merchant
-func (svc *GetExpressCheckoutDetails) SetMerchant(m Merchant) {
-	svc.Merchant = m
-}
-
 // Do executes GetExpressCheckoutDetails operation
-func (svc *GetExpressCheckoutDetails) Do(m Merchant) (*GetExpressCheckoutDetailsResponse, error) {
+func (svc *GetExpressCheckoutDetails) Do(cli client.Client) (*GetExpressCheckoutDetailsResponse, error) {
 	const method = "GetExpressCheckoutDetails"
 	svc.BaseRequest.Method = method
 
 	result := &GetExpressCheckoutDetailsResponse{}
-	err := m.call(svc, result)
+	err := cli.Call(svc, result)
 	return result, err
 }
 
 // GetExpressCheckoutDetailsResponse is struct for response of GetExpressCheckoutDetails API
 type GetExpressCheckoutDetailsResponse struct {
-	BaseResponse `url:",squash"`
+	client.BaseResponse `url:",squash"`
 
 	// success
 	Token              string `url:"TOKEN"`
@@ -65,11 +61,6 @@ func (r *GetExpressCheckoutDetailsResponse) IsPayerVerified() bool {
 // IsSuccess checks the request is success or not
 func (r *GetExpressCheckoutDetailsResponse) IsSuccess() bool {
 	return r.IsRequestSuccess() && r.IsOperationSuccess()
-}
-
-// IsRequestSuccess checks the request is success or not
-func (r *GetExpressCheckoutDetailsResponse) IsRequestSuccess() bool {
-	return r.ACK == ackSuccess
 }
 
 // IsOperationSuccess checks the request is success or not

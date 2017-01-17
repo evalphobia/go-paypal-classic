@@ -1,4 +1,4 @@
-package merchant
+package client
 
 import (
 	"testing"

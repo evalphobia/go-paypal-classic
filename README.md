@@ -32,6 +32,8 @@ go-paypal-classic is library for [PayPal Classic API](https://developer.paypal.c
     - [GetRecurringPaymentsProfileDetails](https://developer.paypal.com/docs/classic/api/merchant/GetRecurringPaymentsProfileDetails_API_Operation_NVP/)
     - [ManageRecurringPaymentsProfileStatus](https://developer.paypal.com/docs/classic/api/merchant/ManageRecurringPaymentsProfileStatus_API_Operation_NVP/)
     - [SetExpressCheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/)
+- Transaction
+    - [TransactionSearch](https://developer.paypal.com/docs/classic/api/merchant/TransactionSearch_API_Operation_NVP/)
 
 ## Quick Usage
 
@@ -42,7 +44,7 @@ import (
     "os"
 
     "github.com/evalphobia/go-paypal-classic/config"
-    "github.com/evalphobia/go-paypal-classic/merchant"
+    "github.com/evalphobia/go-paypal-classic/client/merchant"
 )
 
 func main() {
@@ -75,7 +77,7 @@ func main() {
 
 ```go
 import (
-    "github.com/evalphobia/go-paypal-classic/merchant"
+    "github.com/evalphobia/go-paypal-classic/client/merchant"
 )
 
 func main() {
@@ -99,7 +101,7 @@ func main() {
 
 ```go
 import (
-    "github.com/evalphobia/go-paypal-classic/merchant"
+    "github.com/evalphobia/go-paypal-classic/client/merchant"
 )
 
 func main() {
@@ -126,7 +128,7 @@ func main() {
 
 ```go
 import (
-    "github.com/evalphobia/go-paypal-classic/merchant"
+    "github.com/evalphobia/go-paypal-classic/client/merchant"
 )
 
 func main() {
@@ -156,7 +158,7 @@ func main() {
 
 ```go
 import (
-    "github.com/evalphobia/go-paypal-classic/merchant"
+    "github.com/evalphobia/go-paypal-classic/client/merchant"
 )
 
 func main() {
@@ -179,7 +181,7 @@ func main() {
 
 ```go
 import (
-    "github.com/evalphobia/go-paypal-classic/merchant"
+    "github.com/evalphobia/go-paypal-classic/client/merchant"
 )
 
 func main() {
@@ -196,6 +198,32 @@ func main() {
     if resp.IsSuccess() {
         // profile id will be present when success
         // resp.ProfileID
+    }
+}
+```
+
+### TransactionSearch
+
+```go
+import (
+    "time"
+
+    "github.com/evalphobia/go-paypal-classic/client/transaction"
+)
+
+func main() {
+    ts = &transaction.TransactionSearch{
+        StartDate: time.Now(),
+        ProfileID: "I-000000000000",
+    }
+    resp, err := ts.Do(cli)
+    if err != nil {
+        panic("error occured on TransactionSearch api request")
+    }
+
+    if resp.IsSuccess() {
+        // transaction list
+        // resp.Items
     }
 }
 ```

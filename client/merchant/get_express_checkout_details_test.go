@@ -9,13 +9,13 @@ import (
 func TestGetExpressCheckoutDetails(t *testing.T) {
 	assert := assert.New(t)
 
-	m := NewDefault()
+	cli := testNewDefault()
 
 	// error
 	svc := &GetExpressCheckoutDetails{
 		Token: "EC-00000000000000000",
 	}
-	v, err := svc.Do(m)
+	v, err := svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Failure", v.ACK)
 	assert.Equal("124", v.Version)
@@ -33,13 +33,13 @@ func TestGetExpressCheckoutDetails(t *testing.T) {
 		CancelURL:   "http://localhost/",
 		Currency:    CurrencyTWD,
 	}
-	setResp, err := setSVC.Do(m)
+	setResp, err := setSVC.Do(cli)
 	assert.Nil(err)
 
 	svc = &GetExpressCheckoutDetails{
 		Token: setResp.Token,
 	}
-	v, err = svc.Do(m)
+	v, err = svc.Do(cli)
 	assert.Nil(err)
 	assert.Equal("Success", v.ACK)
 	assert.Equal("124", v.Version)
