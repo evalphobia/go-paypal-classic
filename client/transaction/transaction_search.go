@@ -113,6 +113,9 @@ func (r *TransactionSearchResponse) TransactionIDList() (list []string) {
 
 // GetProfileCreatedDate returns time of profile created.
 func (r *TransactionSearchResponse) GetProfileCreatedDate() (time.Time, bool) {
+	if len(r.Items) == 0 {
+		 return time.Time{}, false
+	}
 	item := r.Items[0]
 	if item.IsProfile() && item.IsCreated() {
 		return item.Timestamp, true
