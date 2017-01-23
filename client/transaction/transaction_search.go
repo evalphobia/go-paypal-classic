@@ -111,6 +111,17 @@ func (r *TransactionSearchResponse) TransactionIDList() (list []string) {
 	return
 }
 
+// GetSubscribeiStartedDate returns time of subscription started.
+func (r *TransactionSearchResponse) GetSubscribeStartedDate() (time.Time, bool) {
+        for i := len(r.Items) - 1; i >= 0; i-- {
+                item := r.Items[i]
+                if item.IsProfile() && item.IsCreated() {
+                        return item.Timestamp, true
+                }
+        }
+        return time.Time{}, false
+}
+
 // GetCancelDate returns time of canceled.
 func (r *TransactionSearchResponse) GetCancelDate() (time.Time, bool) {
 	for i := len(r.Items) - 1; i >= 0; i-- {
