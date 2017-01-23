@@ -111,6 +111,18 @@ func (r *TransactionSearchResponse) TransactionIDList() (list []string) {
 	return
 }
 
+// GetProfileCreatedDate returns time of profile created.
+func (r *TransactionSearchResponse) GetProfileCreatedDate() (time.Time, bool) {
+	if len(r.Items) == 0 {
+		return time.Time{}, false
+	}
+	item := r.Items[0]
+	if item.IsProfile() && item.IsCreated() {
+		return item.Timestamp, true
+	}
+        return time.Time{}, false
+}
+
 // GetCancelDate returns time of canceled.
 func (r *TransactionSearchResponse) GetCancelDate() (time.Time, bool) {
 	for i := len(r.Items) - 1; i >= 0; i-- {
