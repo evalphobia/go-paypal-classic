@@ -1,6 +1,7 @@
 # go-paypal-classic
 
 [![GoDoc][1]][2] [![Apache 2.0 License][3]][4] [![Release][5]][6] [![Build Status][7]][8] [![Codecov Coverage][11]][12] [![Go Report Card][13]][14] [![Downloads][15]][16]
+
 [1]: https://godoc.org/github.com/evalphobia/go-paypal-classic?status.svg
 [2]: https://godoc.org/github.com/evalphobia/go-paypal-classic
 [3]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
