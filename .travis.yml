@@ -8,7 +8,7 @@ matrix:
     - go: tip
 before_install:
   - go get golang.org/x/tools/cmd/cover
-  - go get github.com/golang/lint/golint
+  - go get golang.org/x/lint/golint
   - go get github.com/modocache/gover
   - go get -d github.com/stretchr/testify/assert
 before_script:
